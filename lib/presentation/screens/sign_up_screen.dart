@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 import '../widgets/widgets.dart';
 
@@ -41,7 +42,7 @@ class SignUpScreen extends StatelessWidget {
       link: TextWithLinkAtEnd(
         text: 'Already have an account?',
         linkText: 'Login',
-        onLinkPressed: () {},
+        onLinkPressed: () => context.pushReplacement('/auth/sign-in'),
       ),
     );
   }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:track_it/utils/utils.dart';
 
 import '../widgets.dart';
@@ -32,7 +33,7 @@ class AuthScreenLayout extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           leading: IconButton(
-            onPressed: () {},
+            onPressed: () => context.pop(),
             splashRadius: 24,
             icon: const Icon(Icons.arrow_back),
           ),
