@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:track_it/app/config/routes.dart';
 import 'package:track_it/utils/utils.dart';
 
 class WelcomeScreen extends StatelessWidget {
@@ -33,12 +34,12 @@ class WelcomeScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   ElevatedButton(
-                    onPressed: () => context.push('/auth/sign-up'),
+                    onPressed: () => context.pushNamed(kRouteNameSignUp),
                     child: const Text('Let\'s create an account'),
                   ),
                   12.sh,
                   OutlinedButton(
-                    onPressed: () => context.push('/auth/sign-in'),
+                    onPressed: () => context.pushNamed(kRouteNameSignIn),
                     child: const Text('Already have an account?'),
                   ),
                 ],
