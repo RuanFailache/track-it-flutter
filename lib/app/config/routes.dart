@@ -19,7 +19,6 @@ final appRouter = GoRouter(
         GoRoute(
           path: 'sign-in',
           name: kRouteNameSignIn,
-          builder: (context, state) => const SignInScreen(),
           pageBuilder: (context, state) => CustomTransitionPage(
             key: state.pageKey,
             child: const SignInScreen(),
