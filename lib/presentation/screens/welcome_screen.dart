@@ -8,6 +8,9 @@ class WelcomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -19,17 +22,16 @@ class WelcomeScreen extends StatelessWidget {
               Text(
                 'TrackIt',
                 textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.displayLarge?.copyWith(
-                      color: Theme.of(context).colorScheme.primary,
-                    ),
+                style: textTheme.displayLarge?.copyWith(
+                  color: colorScheme.primary,
+                ),
               ),
               Text(
                 'Comece a organizar sua vida agora mesmo, '
                 'criando suas primeiras tarefas e listas.',
                 textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.headlineSmall,
+                style: textTheme.headlineSmall,
               ),
-              24.sh,
               Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [

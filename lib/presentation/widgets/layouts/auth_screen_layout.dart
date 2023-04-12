@@ -35,6 +35,7 @@ class AuthScreenLayout extends StatelessWidget {
           leading: IconButton(
             onPressed: () => context.pop(),
             splashRadius: 24,
+            color: colorScheme.primary,
             icon: const Icon(Icons.arrow_back),
           ),
         ),
