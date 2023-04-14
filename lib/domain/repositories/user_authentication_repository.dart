@@ -1,6 +1,6 @@
 import 'package:track_it/domain/domain.dart';
 
-abstract class UserAuthenticationUsecase {
+abstract class UserAuthenticationRepository {
   Future<UserCredentialsEntity> signIn({
     required String email,
     required String password,

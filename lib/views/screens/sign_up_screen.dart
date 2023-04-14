@@ -27,13 +27,17 @@ class SignUpScreen extends StatelessWidget {
         ),
         PasswordFormField(
           focusNode: FocusNode(),
-          hintText: 'Password',
-          prefixIcon: Icons.lock_outline,
+          decoration: const InputDecoration(
+            hintText: 'Password',
+            prefixIcon: Icon(Icons.lock_outline),
+          ),
         ),
         PasswordFormField(
           focusNode: FocusNode(),
-          hintText: 'Re-enter password',
-          prefixIcon: Icons.lock_outline,
+          decoration: const InputDecoration(
+            hintText: 'Re-enter Password',
+            prefixIcon: Icon(Icons.lock_outline),
+          ),
         ),
       ],
       button: ElevatedButton(

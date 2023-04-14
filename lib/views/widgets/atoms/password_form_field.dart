@@ -3,23 +3,22 @@ import 'package:flutter/material.dart';
 class PasswordFormField extends StatefulWidget {
   const PasswordFormField({
     super.key,
-    this.hintText,
     this.focusNode,
-    required this.prefixIcon,
+    this.onChanged,
+    this.decoration,
   });
 
-  final String? hintText;
-
-  final IconData prefixIcon;
-
   final FocusNode? focusNode;
+
+  final InputDecoration? decoration;
+
+  final void Function(String value)? onChanged;
 
   @override
   State<PasswordFormField> createState() => _PasswordFormFieldState();
 }
 
 class _PasswordFormFieldState extends State<PasswordFormField> {
-
   bool shouldShowPassword = false;
 
   IconData get suffixIcon {
@@ -37,11 +36,10 @@ class _PasswordFormFieldState extends State<PasswordFormField> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      onChanged: widget.onChanged,
       focusNode: widget.focusNode,
       obscureText: !shouldShowPassword,
-      decoration: InputDecoration(
-        hintText: widget.hintText,
-        prefixIcon: Icon(widget.prefixIcon),
+      decoration: widget.decoration?.copyWith(
         suffixIcon: GestureDetector(
           onTap: () => toggleVisibility(context),
           child: Icon(suffixIcon),

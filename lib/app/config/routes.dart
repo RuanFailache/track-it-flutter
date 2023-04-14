@@ -1,6 +1,8 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:track_it/presentation/presentation.dart';
+import 'package:track_it/views/views.dart';
+
+import '../factories/factories.dart';
 
 final _defaultFadeTransitionCurve = CurveTween(curve: Curves.easeInOut);
 
@@ -21,7 +23,7 @@ final appRouter = GoRouter(
           name: kRouteNameSignIn,
           pageBuilder: (context, state) => CustomTransitionPage(
             key: state.pageKey,
-            child: const SignInScreen(),
+            child: makeSignInScreen(),
             transitionsBuilder: (_, animation, __, child) {
               return FadeTransition(
                 opacity: _defaultFadeTransitionCurve.animate(animation),

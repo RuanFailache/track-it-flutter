@@ -15,6 +15,10 @@ class SignInForm with FormzMixin {
 
   final PasswordInput passwordInput;
 
+  String get email => emailInput.value;
+
+  String get password => passwordInput.value;
+
   SignInForm copyWith({
     EmailInput? emailInput,
     PasswordInput? passwordInput,
