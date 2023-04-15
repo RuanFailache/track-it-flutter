@@ -9,7 +9,7 @@ abstract class SignInPresenter {
 
   Stream<FormzSubmissionStatus> get submissionStatusStream;
 
-  bool get canSubmit;
+  Stream<bool> get canSubmitStream;
 
   void emailInputChanged(String email);
 

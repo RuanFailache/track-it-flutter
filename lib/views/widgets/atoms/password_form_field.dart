@@ -6,13 +6,19 @@ class PasswordFormField extends StatefulWidget {
     this.focusNode,
     this.onChanged,
     this.decoration,
+    this.onFieldSubmitted,
+    this.readOnly = false,
   });
+
+  final bool readOnly;
 
   final FocusNode? focusNode;
 
   final InputDecoration? decoration;
 
   final void Function(String value)? onChanged;
+
+  final void Function(String value)? onFieldSubmitted;
 
   @override
   State<PasswordFormField> createState() => _PasswordFormFieldState();
@@ -36,9 +42,11 @@ class _PasswordFormFieldState extends State<PasswordFormField> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      readOnly: widget.readOnly,
       onChanged: widget.onChanged,
       focusNode: widget.focusNode,
       obscureText: !shouldShowPassword,
+      onFieldSubmitted: widget.onFieldSubmitted,
       decoration: widget.decoration?.copyWith(
         suffixIcon: GestureDetector(
           onTap: () => toggleVisibility(context),

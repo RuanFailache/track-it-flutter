@@ -18,9 +18,9 @@ class AuthScreenLayout extends StatelessWidget {
 
   final String subtitle;
 
-  final ElevatedButton button;
+  final Widget button;
 
-  final TextWithLinkAtEnd link;
+  final Widget link;
 
   final List<Widget> formFields;
 

@@ -23,6 +23,14 @@ class GetSignInPresenter implements SignInPresenter {
 
   final _submissionStatus = Rx(FormzSubmissionStatus.initial);
 
+  final _canSubmit = RxBool(false);
+
+  void _validateForm() {
+    _canSubmit.value = _form.isDirty &&
+        _form.isValid &&
+        _submissionStatus.value != FormzSubmissionStatus.inProgress;
+  }
+
   @override
   Stream<String?> get emailErrorStream => _emailError.stream;
 
@@ -36,14 +44,14 @@ class GetSignInPresenter implements SignInPresenter {
   Stream<FormzSubmissionStatus> get submissionStatusStream => _submissionStatus.stream;
 
   @override
-  bool get canSubmit =>
-      _form.isDirty && _form.isValid && _submissionStatus.value != FormzSubmissionStatus.inProgress;
+  Stream<bool> get canSubmitStream => _canSubmit.stream;
 
   @override
   void emailInputChanged(String email) {
     final emailInput = EmailInput.dirty(email);
     _emailError.value = emailInput.error?.description;
     _form = _form.copyWith(emailInput: emailInput);
+    _validateForm();
   }
 
   @override
@@ -51,19 +59,25 @@ class GetSignInPresenter implements SignInPresenter {
     final passwordInput = PasswordInput.dirty(password);
     _passwordError.value = passwordInput.error?.description;
     _form = _form.copyWith(passwordInput: passwordInput);
+    _validateForm();
   }
 
   @override
   Future<void> submitForm() async {
+    _canSubmit.value = false;
     _submissionStatus.value = FormzSubmissionStatus.inProgress;
+
     try {
       await _userAuthenticationRepository.signIn(
         email: _form.email,
         password: _form.password,
       );
+
       _submissionStatus.value = FormzSubmissionStatus.success;
     } catch (err) {
       _submissionStatus.value = FormzSubmissionStatus.failure;
     }
+
+    _validateForm();
   }
 }
