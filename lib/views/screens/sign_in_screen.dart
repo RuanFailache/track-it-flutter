@@ -35,8 +35,6 @@ class SignInScreen extends StatelessWidget {
   }
 
   Widget _buildPasswordInput() {
-    final passwordFocusNode = FocusNode();
-
     return StreamBuilder<FormzSubmissionStatus>(
       stream: presenter.submissionStatusStream,
       builder: (context, submissionStatus) {
@@ -45,7 +43,6 @@ class SignInScreen extends StatelessWidget {
           builder: (context, passwordError) {
             return PasswordFormField(
               readOnly: submissionStatus.data?.isInProgress == true,
-              focusNode: passwordFocusNode,
               onChanged: presenter.passwordInputChanged,
               onFieldSubmitted: (_) => presenter.submitForm(),
               decoration: InputDecoration(
@@ -86,6 +83,17 @@ class SignInScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    presenter.formErrorStream.listen((formError) {
+      if (formError != null) {
+        ScaffoldMessenger.of(context)
+          ..hideCurrentSnackBar()
+          ..showSnackBar(SnackBar(
+            content: Text(formError),
+            behavior: SnackBarBehavior.floating,
+          ));
+      }
+    });
+
     return CloseKeyboardLayout(
       child: Scaffold(
         appBar: AppBar(

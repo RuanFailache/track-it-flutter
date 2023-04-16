@@ -58,8 +58,6 @@ class SignUpScreen extends StatelessWidget {
   }
 
   Widget _buildPasswordInput() {
-    final passwordFocusNode = FocusNode();
-
     return StreamBuilder<FormzSubmissionStatus>(
       stream: presenter.submissionStatusStream,
       builder: (context, submissionStatus) {
@@ -67,7 +65,6 @@ class SignUpScreen extends StatelessWidget {
           stream: presenter.passwordErrorStream,
           builder: (context, passwordError) {
             return PasswordFormField(
-              focusNode: passwordFocusNode,
               textInputAction: TextInputAction.next,
               onChanged: presenter.passwordInputChanged,
               readOnly: submissionStatus.data?.isInProgress == true,
@@ -84,8 +81,6 @@ class SignUpScreen extends StatelessWidget {
   }
 
   Widget _buildConfirmPasswordInput() {
-    final confirmPasswordFocusNode = FocusNode();
-
     return StreamBuilder<FormzSubmissionStatus>(
       stream: presenter.submissionStatusStream,
       builder: (context, submissionStatus) {
@@ -93,7 +88,6 @@ class SignUpScreen extends StatelessWidget {
           stream: presenter.confirmPasswordErrorStream,
           builder: (context, confirmPasswordError) {
             return PasswordFormField(
-              focusNode: confirmPasswordFocusNode,
               onFieldSubmitted: (_) => presenter.submitForm(),
               onChanged: presenter.confirmPasswordInputChanged,
               readOnly: submissionStatus.data?.isInProgress == true,
@@ -135,6 +129,17 @@ class SignUpScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    presenter.formErrorStream.listen((formError) {
+      if (formError != null) {
+        ScaffoldMessenger.of(context)
+          ..hideCurrentSnackBar()
+          ..showSnackBar(SnackBar(
+            content: Text(formError),
+            behavior: SnackBarBehavior.floating,
+          ));
+      }
+    });
+
     return CloseKeyboardLayout(
       child: Scaffold(
         appBar: AppBar(

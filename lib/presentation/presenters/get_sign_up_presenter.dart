@@ -93,9 +93,11 @@ class GetSignUpPresenter implements SignUpPresenter {
   Future<void> submitForm() async {
     if (!_canSubmit.value) return;
 
+    _formError.value = null;
+
     if (_form.passwordInput.value != _form.confirmPasswordInput.value) {
       _formError.value = 'Oops! It looks like the passwords you entered'
-          ' don\'t match. Please try again';
+          ' does not match. Please try again';
       return;
     }
 
