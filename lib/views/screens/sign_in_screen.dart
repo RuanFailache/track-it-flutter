@@ -16,39 +16,50 @@ class SignInScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final emailInputFocusNode = FocusNode();
-    final passwordInputFocusNode = FocusNode();
+    final passwordFocusNode = FocusNode();
 
     return AuthScreenLayout(
       title: 'TrackIt',
       subtitle: 'Login',
       formFields: [
-        StreamBuilder<String?>(
-          stream: presenter.emailErrorStream,
-          builder: (context, snapshot) {
-            return TextFormField(
-              focusNode: emailInputFocusNode,
-              onChanged: presenter.emailInputChanged,
-              onFieldSubmitted: (_) => FocusScope.of(context).requestFocus(passwordInputFocusNode),
-              decoration: InputDecoration(
-                hintText: 'Email',
-                errorText: snapshot.data,
-                prefixIcon: const Icon(Icons.alternate_email),
-              ),
+        StreamBuilder<FormzSubmissionStatus>(
+          stream: presenter.submissionStatusStream,
+          builder: (context, submissionStatus) {
+            return StreamBuilder<String?>(
+              stream: presenter.emailErrorStream,
+              builder: (context, emailError) {
+                return TextFormField(
+                  readOnly: submissionStatus.data?.isInProgress == true,
+                  onChanged: presenter.emailInputChanged,
+                  textInputAction: TextInputAction.next,
+                  decoration: InputDecoration(
+                    hintText: 'Email',
+                    errorText: emailError.data,
+                    prefixIcon: const Icon(Icons.alternate_email),
+                  ),
+                );
+              },
             );
           },
         ),
-        StreamBuilder<String?>(
-          stream: presenter.passwordErrorStream,
-          builder: (context, snapshot) {
-            return PasswordFormField(
-              focusNode: passwordInputFocusNode,
-              onChanged: presenter.passwordInputChanged,
-              decoration: InputDecoration(
-                hintText: 'Password',
-                errorText: snapshot.data,
-                prefixIcon: const Icon(Icons.lock_outline),
-              ),
+        StreamBuilder<FormzSubmissionStatus>(
+          stream: presenter.submissionStatusStream,
+          builder: (context, submissionStatus) {
+            return StreamBuilder<String?>(
+              stream: presenter.passwordErrorStream,
+              builder: (context, passwordError) {
+                return PasswordFormField(
+                  readOnly: submissionStatus.data?.isInProgress == true,
+                  focusNode: passwordFocusNode,
+                  onChanged: presenter.passwordInputChanged,
+                  onFieldSubmitted: (_) => presenter.submitForm(),
+                  decoration: InputDecoration(
+                    hintText: 'Password',
+                    errorText: passwordError.data,
+                    prefixIcon: const Icon(Icons.lock_outline),
+                  ),
+                );
+              },
             );
           },
         ),
@@ -61,7 +72,7 @@ class SignInScreen extends StatelessWidget {
             builder: (context, canSubmit) {
               return ElevatedButton(
                 onPressed: canSubmit.data == true ? presenter.submitForm : null,
-                child: submissionStatus.data == FormzSubmissionStatus.inProgress
+                child: submissionStatus.data?.isInProgress == true
                     ? SizedBox.fromSize(
                         size: const Size(16, 16),
                         child: const CircularProgressIndicator(

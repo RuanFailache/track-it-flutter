@@ -6,6 +6,7 @@ class PasswordFormField extends StatefulWidget {
     this.focusNode,
     this.onChanged,
     this.decoration,
+    this.textInputAction,
     this.onFieldSubmitted,
     this.readOnly = false,
   });
@@ -15,6 +16,8 @@ class PasswordFormField extends StatefulWidget {
   final FocusNode? focusNode;
 
   final InputDecoration? decoration;
+
+  final TextInputAction? textInputAction;
 
   final void Function(String value)? onChanged;
 
@@ -33,10 +36,10 @@ class _PasswordFormFieldState extends State<PasswordFormField> {
   }
 
   void toggleVisibility(BuildContext context) {
-    setState(() {
+    if (widget.focusNode?.hasPrimaryFocus == false) {
       FocusScope.of(context).requestFocus(widget.focusNode);
-      shouldShowPassword = !shouldShowPassword;
-    });
+    }
+    setState(() => shouldShowPassword = !shouldShowPassword);
   }
 
   @override
@@ -46,6 +49,7 @@ class _PasswordFormFieldState extends State<PasswordFormField> {
       onChanged: widget.onChanged,
       focusNode: widget.focusNode,
       obscureText: !shouldShowPassword,
+      textInputAction: widget.textInputAction,
       onFieldSubmitted: widget.onFieldSubmitted,
       decoration: widget.decoration?.copyWith(
         suffixIcon: GestureDetector(

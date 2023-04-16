@@ -21,6 +21,7 @@ class TemporaryUserAuthenticationRepository implements UserAuthenticationReposit
     required String email,
     required String password,
   }) async {
+    await Future.delayed(const Duration(seconds: 2));
     return const UserCredentialsEntity(accessToken: '', refreshToken: '');
   }
 }

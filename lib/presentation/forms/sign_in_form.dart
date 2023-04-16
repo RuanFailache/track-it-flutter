@@ -13,11 +13,33 @@ class SignInForm with FormzMixin {
 
   final EmailInput emailInput;
 
-  final PasswordInput passwordInput;
-
   String get email => emailInput.value;
 
+  String? get emailError {
+    switch (emailInput.error) {
+      case EmailInputError.empty:
+        return 'Email must not be empty';
+      case EmailInputError.invalid:
+        return 'Must be a valid email';
+      default:
+        return null;
+    }
+  }
+
+  final PasswordInput passwordInput;
+
   String get password => passwordInput.value;
+
+  String? get passwordError {
+    switch (passwordInput.error) {
+      case PasswordInputError.empty:
+        return 'Password must not be empty';
+      case PasswordInputError.invalid:
+        return 'Must be a valid password';
+      default:
+        return null;
+    }
+  }
 
   SignInForm copyWith({
     EmailInput? emailInput,

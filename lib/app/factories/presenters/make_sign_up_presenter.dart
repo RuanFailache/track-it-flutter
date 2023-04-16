@@ -2,11 +2,11 @@ import 'package:track_it/data/repositories/user_authentication/temporary_user_au
 import 'package:track_it/presentation/presentation.dart';
 import 'package:track_it/views/views.dart';
 
-SignInPresenter makeSignInPresenter() {
-  const form = SignInForm.initial();
+SignUpPresenter makeSignUpPresenter() {
+  const form = SignUpForm.initial();
   const userAuthenticationRepository = TemporaryUserAuthenticationRepository();
 
-  return GetSignInPresenter(
+  return GetSignUpPresenter(
     form: form,
     userAuthenticationRepository: userAuthenticationRepository,
   );

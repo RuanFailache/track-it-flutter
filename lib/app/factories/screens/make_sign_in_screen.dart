@@ -1,6 +1,6 @@
 import 'package:track_it/views/views.dart';
 
-import '../presenters/make_sign_in_presenter.dart';
+import '../factories.dart';
 
 SignInScreen makeSignInScreen() {
   final presenter = makeSignInPresenter();

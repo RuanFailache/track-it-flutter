@@ -48,44 +48,46 @@ class AuthScreenLayout extends StatelessWidget {
                   constraints: BoxConstraints(
                     minHeight: viewportConstraints.maxHeight,
                   ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          Text(
-                            title,
-                            style: textTheme.headlineMedium?.copyWith(
-                              color: colorScheme.primary,
+                  child: Form(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            Text(
+                              title,
+                              style: textTheme.headlineMedium?.copyWith(
+                                color: colorScheme.primary,
+                              ),
                             ),
-                          ),
-                          8.sh,
-                          Text(subtitle, style: textTheme.headlineSmall),
-                          24.sh,
-                          ListView.separated(
-                            shrinkWrap: true,
-                            itemCount: formFields.length,
-                            padding: const EdgeInsets.only(bottom: 12),
-                            physics: const NeverScrollableScrollPhysics(),
-                            itemBuilder: (_, index) => formFields[index],
-                            separatorBuilder: (_, __) => 12.sh,
-                          ),
-                        ],
-                      ),
-                      Wrap(
-                        spacing: 16,
-                        direction: Axis.vertical,
-                        crossAxisAlignment: WrapCrossAlignment.center,
-                        children: [
-                          SizedBox(
-                            width: viewportConstraints.maxWidth - 48,
-                            child: button,
-                          ),
-                          link
-                        ],
-                      ),
-                    ],
+                            8.sh,
+                            Text(subtitle, style: textTheme.headlineSmall),
+                            24.sh,
+                            ListView.separated(
+                              shrinkWrap: true,
+                              itemCount: formFields.length,
+                              physics: const NeverScrollableScrollPhysics(),
+                              itemBuilder: (_, index) => formFields[index],
+                              separatorBuilder: (_, __) => 12.sh,
+                            ),
+                          ],
+                        ),
+                        12.sh,
+                        Wrap(
+                          spacing: 16,
+                          direction: Axis.vertical,
+                          crossAxisAlignment: WrapCrossAlignment.center,
+                          children: [
+                            SizedBox(
+                              width: viewportConstraints.maxWidth - 48,
+                              child: button,
+                            ),
+                            link
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               );

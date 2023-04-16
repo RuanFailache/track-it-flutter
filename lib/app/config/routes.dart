@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:track_it/app/factories/presenters/make_sign_up_presenter.dart';
 import 'package:track_it/views/views.dart';
 
 import '../factories/factories.dart';
@@ -37,7 +38,7 @@ final appRouter = GoRouter(
           name: kRouteNameSignUp,
           pageBuilder: (context, state) => CustomTransitionPage(
             key: state.pageKey,
-            child: const SignUpScreen(),
+            child: makeSignUpScreen(),
             transitionsBuilder: (_, animation, __, child) {
               return FadeTransition(
                 opacity: _defaultFadeTransitionCurve.animate(animation),

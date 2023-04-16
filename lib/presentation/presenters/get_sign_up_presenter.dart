@@ -1,23 +1,28 @@
 import 'package:formz/formz.dart';
 import 'package:get/get.dart';
 import 'package:track_it/domain/domain.dart';
+import 'package:track_it/presentation/inputs/required_input.dart';
 import 'package:track_it/presentation/presentation.dart';
 import 'package:track_it/views/views.dart';
 
-class GetSignInPresenter implements SignInPresenter {
-  GetSignInPresenter({
-    required SignInForm form,
+class GetSignUpPresenter implements SignUpPresenter {
+  GetSignUpPresenter({
+    required SignUpForm form,
     required UserAuthenticationRepository userAuthenticationRepository,
   })  : _form = form,
         _userAuthenticationRepository = userAuthenticationRepository;
 
-  SignInForm _form;
+  SignUpForm _form;
 
   final UserAuthenticationRepository _userAuthenticationRepository;
+
+  final _fullNameError = RxnString();
 
   final _emailError = RxnString();
 
   final _passwordError = RxnString();
+
+  final _confirmPasswordError = RxnString();
 
   final _formError = RxnString();
 
@@ -28,14 +33,28 @@ class GetSignInPresenter implements SignInPresenter {
   void _validateForm() {
     _canSubmit.value = _form.isDirty &&
         _form.isValid &&
+        _form.password == _form.confirmPassword &&
         _submissionStatus.value != FormzSubmissionStatus.inProgress;
+
+    if (_form.isDirty && _form.password != _form.confirmPassword) {
+      _formError.value = 'The confirmation password you entered does not '
+          'match the password you previously typed, please check and try again.';
+    } else {
+      _formError.value = null;
+    }
   }
+
+  @override
+  Stream<String?> get fullNameErrorStream => _fullNameError.stream;
 
   @override
   Stream<String?> get emailErrorStream => _emailError.stream;
 
   @override
   Stream<String?> get passwordErrorStream => _passwordError.stream;
+
+  @override
+  Stream<String?> get confirmPasswordErrorStream => _confirmPasswordError.stream;
 
   @override
   Stream<String?> get formErrorStream => _formError.stream;
@@ -45,6 +64,14 @@ class GetSignInPresenter implements SignInPresenter {
 
   @override
   Stream<bool> get canSubmitStream => _canSubmit.stream;
+
+  @override
+  void fullNameInputChanged(String email) {
+    final fullNameInput = RequiredInput.dirty(email);
+    _form = _form.copyWith(fullNameInput: fullNameInput);
+    _fullNameError.value = _form.fullNameError;
+    _validateForm();
+  }
 
   @override
   void emailInputChanged(String email) {
@@ -63,6 +90,14 @@ class GetSignInPresenter implements SignInPresenter {
   }
 
   @override
+  void confirmPasswordInputChanged(String confirmPassword) {
+    final confirmPasswordInput = PasswordInput.dirty(confirmPassword);
+    _form = _form.copyWith(confirmPasswordInput: confirmPasswordInput);
+    _passwordError.value = _form.confirmPasswordError;
+    _validateForm();
+  }
+
+  @override
   Future<void> submitForm() async {
     if (!_canSubmit.value) return;
 
@@ -70,7 +105,8 @@ class GetSignInPresenter implements SignInPresenter {
     _submissionStatus.value = FormzSubmissionStatus.inProgress;
 
     try {
-      await _userAuthenticationRepository.signIn(
+      await _userAuthenticationRepository.signUp(
+        fullName: _form.fullName,
         email: _form.email,
         password: _form.password,
       );
