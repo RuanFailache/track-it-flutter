@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:track_it/app/config/routes.dart';
-import 'package:track_it/utils/utils.dart';
 
 class WelcomeScreen extends StatelessWidget {
   const WelcomeScreen({Key? key}) : super(key: key);
@@ -39,7 +38,7 @@ class WelcomeScreen extends StatelessWidget {
                     onPressed: () => context.pushNamed(kRouteNameSignUp),
                     child: const Text('Let\'s create an account'),
                   ),
-                  12.sh,
+                  const SizedBox(height: 12),
                   OutlinedButton(
                     onPressed: () => context.pushNamed(kRouteNameSignIn),
                     child: const Text('Already have an account?'),

@@ -33,15 +33,7 @@ class GetSignUpPresenter implements SignUpPresenter {
   void _validateForm() {
     _canSubmit.value = _form.isDirty &&
         _form.isValid &&
-        _form.password == _form.confirmPassword &&
         _submissionStatus.value != FormzSubmissionStatus.inProgress;
-
-    if (_form.isDirty && _form.password != _form.confirmPassword) {
-      _formError.value = 'The confirmation password you entered does not '
-          'match the password you previously typed, please check and try again.';
-    } else {
-      _formError.value = null;
-    }
   }
 
   @override
@@ -91,9 +83,9 @@ class GetSignUpPresenter implements SignUpPresenter {
 
   @override
   void confirmPasswordInputChanged(String confirmPassword) {
-    final confirmPasswordInput = PasswordInput.dirty(confirmPassword);
+    final confirmPasswordInput = RequiredInput.dirty(confirmPassword);
     _form = _form.copyWith(confirmPasswordInput: confirmPasswordInput);
-    _passwordError.value = _form.confirmPasswordError;
+    _confirmPasswordError.value = _form.confirmPasswordError;
     _validateForm();
   }
 
@@ -101,14 +93,20 @@ class GetSignUpPresenter implements SignUpPresenter {
   Future<void> submitForm() async {
     if (!_canSubmit.value) return;
 
+    if (_form.passwordInput.value != _form.confirmPasswordInput.value) {
+      _formError.value = 'Oops! It looks like the passwords you entered'
+          ' don\'t match. Please try again';
+      return;
+    }
+
     _canSubmit.value = false;
     _submissionStatus.value = FormzSubmissionStatus.inProgress;
 
     try {
       await _userAuthenticationRepository.signUp(
-        fullName: _form.fullName,
-        email: _form.email,
-        password: _form.password,
+        fullName: _form.fullNameInput.value,
+        email: _form.emailInput.value,
+        password: _form.passwordInput.value,
       );
 
       _submissionStatus.value = FormzSubmissionStatus.success;

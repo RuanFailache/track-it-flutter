@@ -1,15 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-final kFontFamilyInter = GoogleFonts.inter().fontFamily;
-final kFontFamilyFallbackInter = GoogleFonts.inter().fontFamilyFallback;
+final kFontFamilyInter = GoogleFonts
+    .inter()
+    .fontFamily;
+final kFontFamilyFallbackInter = GoogleFonts
+    .inter()
+    .fontFamilyFallback;
 
 const kColorPrimary = Color(0xFF220859);
 const kColorSecondary = Color(0xFFDB2EF2);
 const kColorBackground = Color(0xFFFFFFFF);
 const kColorSurface = Color(0xFFF7F7F7);
+const kColorDisabled = Color(0xFF979797);
 
 final appTheme = ThemeData(
+  disabledColor: kColorDisabled,
   scaffoldBackgroundColor: kColorBackground,
   splashColor: kColorPrimary.withOpacity(.3),
   highlightColor: kColorPrimary.withOpacity(.1),
@@ -65,6 +71,7 @@ final appTheme = ThemeData(
         vertical: 16,
         horizontal: 24,
       ),
+      disabledForegroundColor: kColorDisabled,
     ),
   ),
   outlinedButtonTheme: OutlinedButtonThemeData(

@@ -14,11 +14,9 @@ class SignUpForm with FormzMixin {
       : fullNameInput = const RequiredInput.pure(),
         emailInput = const EmailInput.pure(),
         passwordInput = const PasswordInput.pure(),
-        confirmPasswordInput = const PasswordInput.pure();
+        confirmPasswordInput = const RequiredInput.pure();
 
   final RequiredInput fullNameInput;
-
-  String get fullName => emailInput.value;
 
   String? get fullNameError {
     switch (fullNameInput.error) {
@@ -30,8 +28,6 @@ class SignUpForm with FormzMixin {
   }
 
   final EmailInput emailInput;
-
-  String get email => emailInput.value;
 
   String? get emailError {
     switch (emailInput.error) {
@@ -46,8 +42,6 @@ class SignUpForm with FormzMixin {
 
   final PasswordInput passwordInput;
 
-  String get password => passwordInput.value;
-
   String? get passwordError {
     switch (passwordInput.error) {
       case PasswordInputError.empty:
@@ -59,16 +53,12 @@ class SignUpForm with FormzMixin {
     }
   }
 
-  final PasswordInput confirmPasswordInput;
-
-  String get confirmPassword => passwordInput.value;
+  final RequiredInput confirmPasswordInput;
 
   String? get confirmPasswordError {
-    switch (passwordInput.error) {
-      case PasswordInputError.empty:
+    switch (confirmPasswordInput.error) {
+      case RequiredInputError.empty:
         return 'Password must not be empty';
-      case PasswordInputError.invalid:
-        return 'Must contain at least 6 characters';
       default:
         return null;
     }
@@ -78,7 +68,7 @@ class SignUpForm with FormzMixin {
     RequiredInput? fullNameInput,
     EmailInput? emailInput,
     PasswordInput? passwordInput,
-    PasswordInput? confirmPasswordInput,
+    RequiredInput? confirmPasswordInput,
   }) =>
       SignUpForm(
         fullNameInput: fullNameInput ?? this.fullNameInput,
