@@ -1,1 +1,1 @@
-export 'user_authentication/temporary_user_authentication_repository.dart';
+export 'user_authentication/remote_user_authentication_repository.dart';

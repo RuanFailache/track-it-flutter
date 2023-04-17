@@ -1,10 +1,10 @@
-import 'package:track_it/data/repositories/user_authentication/temporary_user_authentication_repository.dart';
+import 'package:track_it/app/factories/factories.dart';
 import 'package:track_it/presentation/presentation.dart';
 import 'package:track_it/views/views.dart';
 
 SignInPresenter makeSignInPresenter() {
   const form = SignInForm.initial();
-  const userAuthenticationRepository = TemporaryUserAuthenticationRepository();
+  final userAuthenticationRepository = makeUserAuthenticationRepository();
 
   return GetSignInPresenter(
     form: form,

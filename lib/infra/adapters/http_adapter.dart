@@ -18,17 +18,19 @@ class HttpClientAdapter extends HttpClient {
     final urlAsUri = Uri.parse(url);
 
     final clientResponse = await (() {
-      switch (method) {
-        case HttpMethod.get:
-          return client.get(urlAsUri);
-        case HttpMethod.post:
-          return client.post(urlAsUri, body: encodedBody);
-        case HttpMethod.put:
-          return client.put(urlAsUri, body: encodedBody);
-        case HttpMethod.delete:
-          return client.delete(urlAsUri, body: encodedBody);
-        default:
-          throw HttpError.unknown;
+      try {
+        switch (method) {
+          case HttpMethod.get:
+            return client.get(urlAsUri);
+          case HttpMethod.post:
+            return client.post(urlAsUri, body: encodedBody);
+          case HttpMethod.put:
+            return client.put(urlAsUri, body: encodedBody);
+          case HttpMethod.delete:
+            return client.delete(urlAsUri, body: encodedBody);
+        }
+      } catch (err) {
+        throw HttpError.unknown;
       }
     })();
 
