@@ -1,4 +1,5 @@
 import 'package:formz/formz.dart';
+import 'package:track_it/presentation/inputs/required_input.dart';
 import 'package:track_it/presentation/presentation.dart';
 
 class SignInForm with FormzMixin {
@@ -9,7 +10,7 @@ class SignInForm with FormzMixin {
 
   const SignInForm.initial()
       : emailInput = const EmailInput.pure(),
-        passwordInput = const PasswordInput.pure();
+        passwordInput = const RequiredInput.pure();
 
   final EmailInput emailInput;
 
@@ -24,14 +25,12 @@ class SignInForm with FormzMixin {
     }
   }
 
-  final PasswordInput passwordInput;
+  final RequiredInput passwordInput;
 
   String? get passwordError {
     switch (passwordInput.error) {
-      case PasswordInputError.empty:
+      case RequiredInputError.empty:
         return 'Password must not be empty';
-      case PasswordInputError.invalid:
-        return 'Must be a valid password';
       default:
         return null;
     }
@@ -39,7 +38,7 @@ class SignInForm with FormzMixin {
 
   SignInForm copyWith({
     EmailInput? emailInput,
-    PasswordInput? passwordInput,
+    RequiredInput? passwordInput,
   }) =>
       SignInForm(
         emailInput: emailInput ?? this.emailInput,

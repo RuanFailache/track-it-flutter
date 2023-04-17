@@ -1,6 +1,7 @@
 import 'package:formz/formz.dart';
 import 'package:get/get.dart';
 import 'package:track_it/domain/domain.dart';
+import 'package:track_it/presentation/inputs/required_input.dart';
 import 'package:track_it/presentation/presentation.dart';
 import 'package:track_it/views/views.dart';
 
@@ -56,7 +57,7 @@ class GetSignInPresenter implements SignInPresenter {
 
   @override
   void passwordInputChanged(String password) {
-    final passwordInput = PasswordInput.dirty(password);
+    final passwordInput = RequiredInput.dirty(password);
     _form = _form.copyWith(passwordInput: passwordInput);
     _passwordError.value = _form.passwordError;
     _validateForm();
@@ -66,6 +67,7 @@ class GetSignInPresenter implements SignInPresenter {
   Future<void> submitForm() async {
     if (!_canSubmit.value) return;
 
+    _formError.value = null;
     _canSubmit.value = false;
     _submissionStatus.value = FormzSubmissionStatus.inProgress;
 
@@ -77,6 +79,13 @@ class GetSignInPresenter implements SignInPresenter {
 
       _submissionStatus.value = FormzSubmissionStatus.success;
     } catch (err) {
+      print('err: $err');
+      if (err == UserAuthenticationError.invalidCredentials) {
+        _formError.value = 'Invalid credentials provided';
+      }
+      if (err == UserAuthenticationError.unknown) {
+        _formError.value = 'Unknown error occurred. Please try again or contact us';
+      }
       _submissionStatus.value = FormzSubmissionStatus.failure;
     }
 

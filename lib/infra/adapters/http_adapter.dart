@@ -14,25 +14,33 @@ class HttpClientAdapter extends HttpClient {
     required String url,
     required HttpMethod method,
   }) async {
+    late Response clientResponse;
+
     final encodedBody = body != null ? jsonEncode(body) : null;
     final urlAsUri = Uri.parse(url);
 
-    final clientResponse = await (() {
-      try {
-        switch (method) {
-          case HttpMethod.get:
-            return client.get(urlAsUri);
-          case HttpMethod.post:
-            return client.post(urlAsUri, body: encodedBody);
-          case HttpMethod.put:
-            return client.put(urlAsUri, body: encodedBody);
-          case HttpMethod.delete:
-            return client.delete(urlAsUri, body: encodedBody);
-        }
-      } catch (err) {
-        throw HttpError.unknown;
+    try {
+      switch (method) {
+        case HttpMethod.get:
+          clientResponse = await client.get(urlAsUri);
+          break;
+
+        case HttpMethod.post:
+          clientResponse = await client.post(urlAsUri, body: encodedBody);
+          break;
+
+        case HttpMethod.put:
+          clientResponse = await client.put(urlAsUri, body: encodedBody);
+          break;
+
+        case HttpMethod.delete:
+          clientResponse = await client.delete(urlAsUri, body: encodedBody);
+          break;
       }
-    })();
+    } catch (err) {
+      throw HttpError.unknown;
+    }
+
 
     final statusCode = clientResponse.statusCode;
 
