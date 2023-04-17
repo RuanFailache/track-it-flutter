@@ -136,6 +136,7 @@ class SignUpScreen extends StatelessWidget {
           ..showSnackBar(SnackBar(
             content: Text(formError),
             behavior: SnackBarBehavior.floating,
+            dismissDirection: DismissDirection.horizontal,
           ));
       }
     });
