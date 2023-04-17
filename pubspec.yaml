@@ -20,6 +20,7 @@ dependencies:
     provider: ^6.0.5
     meta: ^1.8.0
     async: ^2.10.0
+    http: ^0.13.5
 
 dev_dependencies:
     flutter_test:
