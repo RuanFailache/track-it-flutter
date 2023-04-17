@@ -13,8 +13,6 @@ class SignInForm with FormzMixin {
 
   final EmailInput emailInput;
 
-  String get email => emailInput.value;
-
   String? get emailError {
     switch (emailInput.error) {
       case EmailInputError.empty:
@@ -27,8 +25,6 @@ class SignInForm with FormzMixin {
   }
 
   final PasswordInput passwordInput;
-
-  String get password => passwordInput.value;
 
   String? get passwordError {
     switch (passwordInput.error) {

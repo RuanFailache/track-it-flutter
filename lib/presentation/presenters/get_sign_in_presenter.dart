@@ -71,8 +71,8 @@ class GetSignInPresenter implements SignInPresenter {
 
     try {
       await _userAuthenticationRepository.signIn(
-        email: _form.email,
-        password: _form.password,
+        email: _form.emailInput.value,
+        password: _form.passwordInput.value,
       );
 
       _submissionStatus.value = FormzSubmissionStatus.success;
