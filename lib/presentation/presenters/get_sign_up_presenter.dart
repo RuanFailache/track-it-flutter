@@ -113,10 +113,9 @@ class GetSignUpPresenter implements SignUpPresenter {
 
       _submissionStatus.value = FormzSubmissionStatus.success;
     } catch (err) {
-      if (err == UserAuthenticationError.invalidCredentials) {
-        _formError.value = 'Invalid credentials provided';
-      }
-      if (err == UserAuthenticationError.unknown) {
+      if (err == UserAuthenticationSignUpError.accountExists) {
+        _formError.value = 'Opps! it\'s account already is registered!';
+      } else {
         _formError.value = 'Unknown error occurred. Please try again or contact us';
       }
       _submissionStatus.value = FormzSubmissionStatus.failure;

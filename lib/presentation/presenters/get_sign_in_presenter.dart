@@ -79,12 +79,10 @@ class GetSignInPresenter implements SignInPresenter {
 
       _submissionStatus.value = FormzSubmissionStatus.success;
     } catch (err) {
-      print('err: $err');
-      if (err == UserAuthenticationError.invalidCredentials) {
-        _formError.value = 'Invalid credentials provided';
-      }
-      if (err == UserAuthenticationError.unknown) {
+      if (err == UserAuthenticationSignInError.unknown) {
         _formError.value = 'Unknown error occurred. Please try again or contact us';
+      } else {
+        _formError.value = 'Invalid credentials provided';
       }
       _submissionStatus.value = FormzSubmissionStatus.failure;
     }

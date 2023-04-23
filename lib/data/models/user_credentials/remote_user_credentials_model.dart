@@ -4,18 +4,14 @@ import 'package:track_it/domain/domain.dart';
 class RemoteUserCredentialsModel {
   const RemoteUserCredentialsModel({
     required this.accessToken,
-    required this.refreshToken,
   });
 
   final String accessToken;
 
-  final String refreshToken;
-
   factory RemoteUserCredentialsModel.fromJson(Map json) {
-    if (json.containsKey('accessToken') && json.containsKey('refreshToken')) {
+    if (json.containsKey('accessToken')) {
       return RemoteUserCredentialsModel(
         accessToken: json['accessToken'],
-        refreshToken: json['refreshToken'],
       );
     }
     throw HttpError.invalidData;
@@ -24,7 +20,6 @@ class RemoteUserCredentialsModel {
   UserCredentialsEntity toEntity() {
     return UserCredentialsEntity(
       accessToken: accessToken,
-      refreshToken: refreshToken,
     );
   }
 }

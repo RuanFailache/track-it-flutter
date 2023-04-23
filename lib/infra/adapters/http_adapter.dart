@@ -8,6 +8,11 @@ class HttpClientAdapter extends HttpClient {
 
   final Client client;
 
+  Map<String, String> get headers => {
+        'content-type': 'application/json',
+        'accept': 'application/json',
+      };
+
   @override
   Future<Map?> request({
     Map? body,
@@ -22,25 +27,24 @@ class HttpClientAdapter extends HttpClient {
     try {
       switch (method) {
         case HttpMethod.get:
-          clientResponse = await client.get(urlAsUri);
+          clientResponse = await client.get(urlAsUri, headers: headers);
           break;
 
         case HttpMethod.post:
-          clientResponse = await client.post(urlAsUri, body: encodedBody);
+          clientResponse = await client.post(urlAsUri, body: encodedBody, headers: headers);
           break;
 
         case HttpMethod.put:
-          clientResponse = await client.put(urlAsUri, body: encodedBody);
+          clientResponse = await client.put(urlAsUri, body: encodedBody, headers: headers);
           break;
 
         case HttpMethod.delete:
-          clientResponse = await client.delete(urlAsUri, body: encodedBody);
+          clientResponse = await client.delete(urlAsUri, body: encodedBody, headers: headers);
           break;
       }
     } catch (err) {
       throw HttpError.unknown;
     }
-
 
     final statusCode = clientResponse.statusCode;
 
@@ -52,6 +56,19 @@ class HttpClientAdapter extends HttpClient {
       return jsonDecode(clientResponse.body);
     }
 
-    throw HttpErrorUtils.getErrorByStatusCode(statusCode);
+    switch (statusCode) {
+      case 400:
+        throw HttpError.badRequest;
+      case 401:
+        throw HttpError.unauthorized;
+      case 403:
+        throw HttpError.forbidden;
+      case 404:
+        throw HttpError.notFound;
+      case 409:
+        throw HttpError.conflict;
+      default:
+        throw HttpError.serverError;
+    }
   }
 }

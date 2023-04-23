@@ -1,7 +1,14 @@
 import 'package:track_it/domain/domain.dart';
 
-enum UserAuthenticationError {
+enum UserAuthenticationSignInError {
   invalidCredentials,
+  invalidData,
+  unknown,
+}
+
+enum UserAuthenticationSignUpError {
+  accountExists,
+  invalidData,
   unknown,
 }
 

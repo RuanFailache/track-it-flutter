@@ -39,9 +39,15 @@ class RemoteUserAuthenticationRepository extends UserAuthenticationRepository {
 
       return RemoteUserCredentialsModel.fromJson(httpClientResponse).toEntity();
     } on HttpError catch (err) {
-      throw err == HttpError.unauthorized
-          ? UserAuthenticationError.invalidCredentials
-          : UserAuthenticationError.unknown;
+      if (err == HttpError.badRequest) {
+        throw UserAuthenticationSignInError.invalidData;
+      }
+
+      if (err == HttpError.unauthorized) {
+        throw UserAuthenticationSignInError.invalidCredentials;
+      }
+
+      throw UserAuthenticationSignInError.unknown;
     }
   }
 
@@ -51,26 +57,30 @@ class RemoteUserAuthenticationRepository extends UserAuthenticationRepository {
     required String email,
     required String password,
   }) async {
-    final body = {
-      'email': email,
-      'fullName': fullName,
-      'password': password,
-    };
-
     try {
       final httpClientResponse = await httpClient.request(
         url: '$url/auth/sign-up',
-        body: body,
         method: HttpMethod.post,
+        body: {
+          'email': email,
+          'fullName': fullName,
+          'password': password,
+        },
       );
 
       if (httpClientResponse == null) throw HttpError.serverError;
 
       return RemoteUserCredentialsModel.fromJson(httpClientResponse).toEntity();
     } on HttpError catch (err) {
-      throw err == HttpError.unauthorized
-          ? UserAuthenticationError.invalidCredentials
-          : UserAuthenticationError.unknown;
+      if (err == HttpError.conflict) {
+        throw UserAuthenticationSignUpError.accountExists;
+      }
+
+      if (err == HttpError.badRequest) {
+        throw UserAuthenticationSignUpError.invalidData;
+      }
+
+      throw UserAuthenticationSignUpError.unknown;
     }
   }
 }
